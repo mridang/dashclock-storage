@@ -2,7 +2,7 @@
 
     <string name="internal">Internal: %1$s of %2$s free</string>
     <string name="extension_name">Storage</string>
-    <string name="available_space">%1$d%% storage unused</string>
+    <string name="available_space">Storage — %1$d%% free</string>
     <string name="application_name">Dashclock Storage Extension</string>
     <string name="extension_info">Displays information about the amount of available storage.</string>
     <string name="external">External: %1$s of %2$s free</string>
