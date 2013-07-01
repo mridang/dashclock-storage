@@ -1,7 +1,9 @@
 package com.mridang.storage;
 
+import android.content.Intent;
 import android.os.Environment;
 import android.os.StatFs;
+import android.provider.Settings;
 import android.text.format.Formatter;
 import android.util.Log;
 
@@ -98,6 +100,7 @@ public class StorageWidget extends DashClockExtension {
 			}
 
 			edtInformation.status(String.format(getString(R.string.available_space), (int) (0.5d + (double) getFreeMemory() * 100 / (double) getTotalMemory())));
+			edtInformation.clickIntent(new Intent(Settings.ACTION_WIFI_SETTINGS));
 			
 			Log.v("StorageWidget", "External: " + Formatter.formatFileSize(getApplicationContext(), getExternalTotalMemory()));
 			if (getExternalTotalMemory() > 0L) {
