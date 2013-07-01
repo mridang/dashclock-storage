@@ -100,7 +100,7 @@ public class StorageWidget extends DashClockExtension {
 			}
 
 			edtInformation.status(String.format(getString(R.string.available_space), (int) (0.5d + (double) getFreeMemory() * 100 / (double) getTotalMemory())));
-			edtInformation.clickIntent(new Intent(Settings.ACTION_WIFI_SETTINGS));
+			edtInformation.clickIntent(new Intent(Settings.ACTION_INTERNAL_STORAGE_SETTINGS));
 			
 			Log.v("StorageWidget", "External: " + Formatter.formatFileSize(getApplicationContext(), getExternalTotalMemory()));
 			if (getExternalTotalMemory() > 0L) {
