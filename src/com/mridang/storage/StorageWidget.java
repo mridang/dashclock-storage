@@ -22,6 +22,9 @@ import com.google.android.apps.dashclock.api.ExtensionData;
  */
 public class StorageWidget extends DashClockExtension {
 
+	/* This is the instance of the file system statistics */
+	StatFs sfsExternal = new StatFs(Environment.getExternalStorageDirectory().getAbsolutePath());
+
 	/*
 	 * @see com.google.android.apps.dashclock.api.DashClockExtension#onCreate()
 	 */
@@ -38,11 +41,10 @@ public class StorageWidget extends DashClockExtension {
 	 * 
 	 * @returns   The amount of external memory
 	 */
-	public Long getExternalTotalMemory() {
+	private Long getExternalTotalMemory() {
 
 		try {
 
-			StatFs sfsExternal = new StatFs(Environment.getExternalStorageDirectory().getAbsolutePath());
 			return Long.valueOf(sfsExternal.getBlockCount()) * Long.valueOf(sfsExternal.getBlockSize());
 
 		} catch (Exception e) {
@@ -64,26 +66,24 @@ public class StorageWidget extends DashClockExtension {
 
 		Log.d("StorageWidget", "Checking device storage");
 		ExtensionData edtInformation = new ExtensionData();
-		edtInformation.visible(true);
 
 		try {
 
 			Log.v("StorageWidget", "Memory: " + Formatter.formatFileSize(getApplicationContext(), getExternalTotalMemory()));
 			if (getExternalTotalMemory() > 0L) {
-				edtInformation
-				.expandedBody((edtInformation.expandedBody() == null ? ""
-						: edtInformation.expandedBody() + "\n")
-						+ String.format(getString(Environment.isExternalStorageEmulated() ? R.string.internal : R.string.external),
-								Formatter.formatFileSize(
-										getApplicationContext(),
-										getExternalFreeMemory()),
-										Formatter.formatFileSize(
-												getApplicationContext(),
+
+				edtInformation.expandedBody(getString((Environment
+						.isExternalStorageEmulated() ? R.string.internal
+								: R.string.external), Formatter.formatFileSize(
+										getApplicationContext(), getExternalFreeMemory()),
+										Formatter.formatFileSize(getApplicationContext(),
 												getExternalTotalMemory())));
+
 			}
 
 			edtInformation.status(String.format(getString(R.string.available_space), (int) (0.5d + (double) getExternalFreeMemory() * 100 / (double) getExternalTotalMemory())));
 			edtInformation.clickIntent(new Intent(Settings.ACTION_INTERNAL_STORAGE_SETTINGS));
+			edtInformation.visible(true);
 
 			if (new Random().nextInt(5) == 0) {
 
@@ -120,6 +120,7 @@ public class StorageWidget extends DashClockExtension {
 			}
 
 		} catch (Exception e) {
+			edtInformation.visible(false);
 			Log.e("StorageWidget", "Encountered an error", e);
 			BugSenseHandler.sendException(e);
 		}
@@ -135,11 +136,10 @@ public class StorageWidget extends DashClockExtension {
 	 * 
 	 * @returns   The amount of free external memory
 	 */
-	public Long getExternalFreeMemory() {
+	private Long getExternalFreeMemory() {
 
-		try {
+		try{
 
-			StatFs sfsExternal = new StatFs(Environment.getExternalStorageDirectory().getAbsolutePath());
 			return Long.valueOf(sfsExternal.getAvailableBlocks()) * Long.valueOf(sfsExternal.getBlockSize());
 
 		} catch (Exception e) {
