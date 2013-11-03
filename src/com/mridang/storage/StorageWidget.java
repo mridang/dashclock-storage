@@ -23,7 +23,7 @@ public class StorageWidget extends DashClockExtension {
 
 		super.onCreate();
 		Log.d("StorageWidget", "Created");
-		BugSenseHandler.initAndStartSession(this, "904s6d13");
+		BugSenseHandler.initAndStartSession(this, "904d6d13");
 
 	}
 
