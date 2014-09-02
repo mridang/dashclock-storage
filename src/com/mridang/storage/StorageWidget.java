@@ -2,7 +2,10 @@ package com.mridang.storage;
 
 import java.util.Random;
 
+import org.acra.ACRA;
+
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
@@ -13,7 +16,6 @@ import android.provider.Settings;
 import android.text.format.Formatter;
 import android.util.Log;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
 
@@ -29,7 +31,7 @@ public class StorageWidget extends DashClockExtension {
 
 		super.onCreate();
 		Log.d("StorageWidget", "Created");
-		BugSenseHandler.initAndStartSession(this, getString(R.string.bugsense));
+		ACRA.init(new AcraApplication(getApplicationContext()));
 
 	}
 
@@ -85,7 +87,7 @@ public class StorageWidget extends DashClockExtension {
 			edtInformation.status(String.format(getString(R.string.available_space), (int) (0.5d + (double) getExternalFreeMemory() * 100 / (double) getExternalTotalMemory())));
 			edtInformation.clickIntent(new Intent(Settings.ACTION_INTERNAL_STORAGE_SETTINGS));
 
-			if (new Random().nextInt(5) == 0) {
+			if (new Random().nextInt(5) == 0 && !(0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE))) {
 
 				PackageManager mgrPackages = getApplicationContext().getPackageManager();
 
@@ -96,12 +98,12 @@ public class StorageWidget extends DashClockExtension {
 				} catch (NameNotFoundException e) {
 
 					Integer intExtensions = 0;
-				    Intent ittFilter = new Intent("com.google.android.apps.dashclock.Extension");
-				    String strPackage;
+					Intent ittFilter = new Intent("com.google.android.apps.dashclock.Extension");
+					String strPackage;
 
-				    for (ResolveInfo info : mgrPackages.queryIntentServices(ittFilter, 0)) {
+					for (ResolveInfo info : mgrPackages.queryIntentServices(ittFilter, 0)) {
 
-				    	strPackage = info.serviceInfo.applicationInfo.packageName;
+						strPackage = info.serviceInfo.applicationInfo.packageName;
 						intExtensions = intExtensions + (strPackage.startsWith("com.mridang.") ? 1 : 0); 
 
 					}
@@ -125,7 +127,7 @@ public class StorageWidget extends DashClockExtension {
 		} catch (Exception e) {
 			edtInformation.visible(false);
 			Log.e("StorageWidget", "Encountered an error", e);
-			BugSenseHandler.sendException(e);
+			ACRA.getErrorReporter().handleSilentException(e);
 		}
 
 		edtInformation.icon(R.drawable.ic_dashclock);
@@ -160,7 +162,6 @@ public class StorageWidget extends DashClockExtension {
 
 		super.onDestroy();
 		Log.d("StorageWidget", "Destroyed");
-		BugSenseHandler.closeSession(this);
 
 	}
 

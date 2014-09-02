@@ -1,10 +1,10 @@
 <resources>
 
-    <string name="internal">Internal: %1$s of %2$s free</string>
     <string name="extension_name">Storage</string>
-    <string name="available_space">%1$d%% free space</string>
+    <string name="available_space">%1$d%% space available</string>
     <string name="application_name">Dashclock Storage Extension</string>
     <string name="extension_info">Displays information about the amount of available storage.</string>
-    <string name="external">External: %1$s of %2$s free</string>
+    <string name="internal">%1$s of %2$s free on the phone</string>
+    <string name="external">%1$s and %2$s of %3$s free on the sdcard</string>
 
 </resources>
