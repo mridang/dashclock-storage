@@ -5,6 +5,6 @@
     <string name="application_name">Dashclock Storage Extension</string>
     <string name="extension_info">Displays information about the amount of available storage.</string>
     <string name="internal">%1$s of %2$s free on the phone</string>
-    <string name="external">%1$s and %2$s of %3$s free on the sdcard</string>
+    <string name="external">%1$s and %2$s free on the sdcard</string>
 
 </resources>
